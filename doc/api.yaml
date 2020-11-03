@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: embassy
+  description: embassy
+  version: 1.0.0
+servers:
+  - url: 'http://{path}:{port}/embassy/{basePath}'
+    variables:
+      path:
+        default: 127.0.0.1
+      port:
+        default: '3939'
+      basePath:
+        default: v1
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    General:
+      type: object
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+        data:
+          type: array
+          items:
+            type: object
+paths:
+  /users:
+    post:
+      description: 注册用户
+      responses:
+        '200':
+          description: 注册成功
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/General'
+        '500':
+          description: 注册失败
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/General'
+        default:
+          description: error payload
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/General'
+      parameters:
+        - name: name
+          in: query
+          description: 用户名
+          required: true
+          schema:
+            type: string
+          style: simple
+        - name: password
+          in: query
+          description: 密码
+          required: true
+          schema:
+            type: string
+          style: simple
+        - name: confirm
+          in: query
+          description: 确认密码
+          required: true
+          schema:
+            type: string
+          style: simple
+        - name: email
+          in: query
+          description: 邮箱
+          required: true
+          schema:
+            type: string
+          style: simple
+    put:
+      description: 重置密码
+      responses:
+        '200':
+          description: 注册成功
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/General'
+        '500':
+          description: 注册失败
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/General'
+      parameters:
+        - name: name
+          in: path
+          description: 要重置的用户名
+          required: true
+          schema:
+            type: string
+          style: simple
+
+
